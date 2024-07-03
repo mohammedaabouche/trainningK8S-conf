@@ -4,7 +4,7 @@ metadata:
   name: backend-deployment
   labels:
     app: backend
-  
+
 spec:
   replicas: 1
   selector:
@@ -32,7 +32,9 @@ spec:
                   name: mongodb-secret
                   key: mongodb-root-password
             - name: ME_CONFIG_MONGODB_SERVER
-              value : mongodb-service
+              value: mongodb-service
+            - name: BACKEND_URL
+              value: backend-service
 
 ---
 apiVersion: v1
@@ -46,4 +48,3 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-

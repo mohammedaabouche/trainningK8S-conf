@@ -19,9 +19,7 @@ spec:
         image: mohammedaabouche/react-app:2.0
         ports:
         - containerPort: 3000
-        env:
-        - name: BACKEND_URL
-          value: backend-service
+        
 
 
 ---
