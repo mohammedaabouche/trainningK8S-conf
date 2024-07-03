@@ -8,10 +8,10 @@ spec:
   source:
     repoURL: https://github.com/mohammedaabouche/trainningK8S-conf.git
     targetRevision: HEAD
-    path: conf
+    path: "."
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: myapp
+    namespace: default
 
   syncPolicy:
     syncOptions:
