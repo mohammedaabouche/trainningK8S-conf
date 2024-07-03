@@ -1,0 +1,1 @@
+# trainningK8S-conf
