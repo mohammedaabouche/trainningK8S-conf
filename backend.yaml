@@ -78,7 +78,7 @@ spec:
     - name: backend
       rules:
         - alert: HighRequestRate
-          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) > 0
+          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) > 2
           for: 1m
           labels:
             severity: critical
