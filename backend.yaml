@@ -77,14 +77,14 @@ spec:
   groups:
     - name: backend
       rules:
-        - alert: FewRequestsAlert
-          expr: http_requests_total{job="backend-service"} < 10000
+        - alert: TFewRequestsAlert
+          expr: http_requests_total{job="backend-service"} < 1000000
           for: 20s
           labels:
-            severity: warning
+            severity: critical
           annotations:
             summary: Few HTTP requests
-            description: Fewer than 5 HTTP 
+            description: Fewer than 10000 HTTP 
 
 ---
 apiVersion: monitoring.coreos.com/v1alpha1
