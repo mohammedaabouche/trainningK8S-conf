@@ -66,3 +66,30 @@ spec:
     - port: backend-port
       interval: 30s
       path: /swagger-stats/metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: backend-prometheus-rule
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: backend
+      rules:
+        - alert: HighRequestRate
+          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) > 2
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: High request rate
+            description: High request rate on backend service
+        - alert: HighErrorRate
+          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) / rate(http_request_duration_seconds_count{job="backend-service"}[1m]) * 100 > 1
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: High error rate
+            description: High error rate on backend service
