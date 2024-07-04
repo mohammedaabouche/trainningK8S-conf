@@ -79,7 +79,7 @@ spec:
       rules:
         - alert: FewRequestsAlert
           expr: http_requests_total{job="backend-service"} < 10000
-          for: 1m
+          for: 20s
           labels:
             severity: warning
           annotations:
