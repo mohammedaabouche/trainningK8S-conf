@@ -78,7 +78,7 @@ spec:
     - name: backend
       rules:
         - alert: FewRequestsAlert
-          expr: http_requests_total{job="your-job"} < 10000
+          expr: http_requests_total{job="backend-service"} < 10000
           for: 1m
           labels:
             severity: warning
