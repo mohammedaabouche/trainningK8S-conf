@@ -77,19 +77,12 @@ spec:
   groups:
     - name: backend
       rules:
-        - alert: HighRequestRate
-          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) > 2
-          for: 1m
-          labels:
-            severity: critical
-          annotations:
-            summary: High request rate
-            description: High request rate on backend service
-        - alert: HighErrorRate
-          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[1m]) / rate(http_request_duration_seconds_count{job="backend-service"}[1m]) * 100 > 1
+        - alert: FewRequestsAlert
+          expr: http_requests_total{job="your-job"} < 5
           for: 1m
           labels:
             severity: warning
           annotations:
-            summary: High error rate
-            description: High error rate on backend service
+            summary: Few HTTP requests
+            description: Fewer than 5 HTTP 
+      
