@@ -4,7 +4,6 @@ metadata:
   name: backend-deployment
   labels:
     app: backend
-
 spec:
   replicas: 1
   selector:
@@ -33,7 +32,6 @@ spec:
                   key: mongodb-root-password
             - name: ME_CONFIG_MONGODB_SERVER
               value: mongodb-service
-            
 
 ---
 apiVersion: v1
@@ -63,7 +61,7 @@ spec:
   jobLabel: job
   selector:
     matchLabels:
-      app: backend-service
+      job: backend-service
   endpoints:
     - port: backend-port
       interval: 30s
