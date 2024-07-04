@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: react-app
-        image: mohammedaabouche/react-app:3.0
+        image: mohammedaabouche/react-app:4.0
         ports:
         - containerPort: 3000
         
