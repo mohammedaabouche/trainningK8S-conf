@@ -78,7 +78,7 @@ spec:
     - name: backend
       rules:
         - alert: FewRequestsAlert
-          expr: http_requests_total{job=job} < 10000
+          expr: http_requests_total{job="backend-service"} < 10000
           for: 1m
           labels:
             severity: warning
@@ -105,5 +105,5 @@ spec:
   receivers:
     - name: 'webhook'
       webhook_configs:
-        - url: 'http://alertmanager-webhook-service:5000/alert'
+        - url: 'www.example.com/alerts'
       
