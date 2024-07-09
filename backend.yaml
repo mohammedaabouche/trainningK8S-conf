@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: mohammedaabouche/backend:2.0
+          image: mohammedaabouche/backend:4.0
           ports:
             - containerPort: 5000
           env:
@@ -49,3 +49,23 @@ spec:
       protocol: TCP
       port: 5000
       targetPort: 5000
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-service-monitor
+  labels:
+    app: backend
+    job: backend-service-monitor
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+    - port: backend-port
+      path: /metrics
+      interval: 30s
+
+
+    

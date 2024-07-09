@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: backend-rules
+  labels:
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+    - name: backend-alerts
+      rules:
+        - alert: BackendDown
+          expr: up{job="backend-service"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "backend instance down"
+            description: "The  backend instance is down for more than 5 minutes."
+        - alert: HighRequestLatency
+          expr: http_request_duration_seconds{job="backend-service", quantile="0.99"} > 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High request latency"
+            description: "Request latency is above 1 second for the backend."
+
