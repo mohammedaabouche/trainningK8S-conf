@@ -3,9 +3,11 @@ kind: PrometheusRule
 metadata:
   name: backend-rules
   labels:
-    prometheus: k8s
-    role: alert-rules
+
+    release: prometheus
+
 spec:
+
   groups:
     - name: backend-alerts
       rules:
@@ -26,74 +28,29 @@ spec:
             summary: "High request latency"
             description: "Request latency is above 1 second for the backend."
 
----
-apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
-metadata:
-  name: prometheus
-spec:
-  serviceMonitorSelector:
-    matchLabels:
-      release: prometheus
 
 
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: alertmanager
-spec:
-  ports:
-    - port: 9093
-      targetPort: 9093
-  selector:
-    app: alertmanager
 
----
-apiVersion: v1
-kind: ConfigMap
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
 metadata:
   name: alertmanager-config
-data:
-  global:
-  resolve_timeout: 5m
-
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 5m
-  repeat_interval: 3h
-  receiver: 'nest-webhook'
-
-receivers:
-- name: 'nest-webhook'
-  webhook_configs:
-  - url: 'http://nestjs-service/alerts'  
-
-
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: alertmanager-deployment
   labels:
-    app: alertmanager
+    ressource: prometheus
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: alertmanager
-  template:
-    metadata:
-      labels:
-        app: alertmanager
-    spec:
-      containers:
-        - name: alertmanager
-          image: prom/alertmanager
-          ports:
-            - containerPort: 9093
+  route:
+    group_by: ['severity']
+    group_wait: 10s
+    group_interval: 5m
+    repeat_interval: 3h
+    receiver: 'webhook'
 
-         
+  receivers:
+  - name: 'webhook'
+    webhook_configs:
+    - url: 'http://nestjs-service/alerts'  
+
+
+
+
