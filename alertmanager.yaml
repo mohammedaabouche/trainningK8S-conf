@@ -24,14 +24,21 @@ spec:
           annotations:
             summary: "High request latency"
             description: "Request latency is above 1 second for the backend."
-        - alert: AlwaysFiringAlerting
-          expr: vector(1)  
+        - alert: HighErrorRate
+          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[5m]) / rate(http_request_duration_seconds_count{job="backend-service"}[5m]) * 100 > 1
+          for: 1s
+          labels:
+            severity: warning
+          annotations:
+            summary: "High error rate"
+            description: "The error rate is above 1% for the backend."
+        - alert : AlwaysFire
+          expr: vector(1)
           labels:
             severity: critical
-            name : AlwaysFiring
           annotations:
-            summary: "Always firing alert"
-            description: "This alert rule always triggers as its condition is constantly true."
+            summary: "Always Firing Alerting"
+            description: "This alert is always firing."
 
 
 
