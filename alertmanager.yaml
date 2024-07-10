@@ -93,8 +93,6 @@ spec:
       containers:
         - name: alertmanager
           image: prom/alertmanager
-          args:
-            - '--config.file=/etc/config/alertmanager.yml'
           ports:
             - containerPort: 9093
 
