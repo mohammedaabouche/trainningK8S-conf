@@ -32,11 +32,6 @@ kind: Prometheus
 metadata:
   name: prometheus
 spec:
-  alerting:
-    alertmanagers:
-      - static_configs:
-          - targets:
-              - alertmanager:9093
   serviceMonitorSelector:
     matchLabels:
       release: prometheus
