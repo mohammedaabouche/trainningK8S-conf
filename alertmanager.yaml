@@ -43,6 +43,7 @@ metadata:
   namespace: default
   labels:
     ressource: prometheus
+    release: prometheus
 spec:
   receivers:
     - name: webhook
