@@ -56,7 +56,6 @@ kind: ConfigMap
 metadata:
   name: alertmanager-config
 data:
-  alertmanager.yml: 
     global:
       resolve_timeout: 5m
 
@@ -71,7 +70,7 @@ data:
     receivers:
     - name: 'webhook-receiver'
       webhook_configs:
-      - url: http/nestjs-service/Metrics'  # URL du service backend-nest pour recevoir les alertes
+      - url: http/nestjs-service/Metrics'  
         send_resolved: true
 
     inhibit_rules:
@@ -102,7 +101,8 @@ spec:
       containers:
         - name: alertmanager
           image: prom/alertmanager
-          
+          args:
+            - '--config.file=/etc/config/alertmanager.yml'
           ports:
             - containerPort: 9093
 
