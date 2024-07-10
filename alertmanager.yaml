@@ -63,9 +63,5 @@ spec:
     groupWait: 10s
     receiver: webhook
     repeatInterval: 30s
-    routes:
-      - matchers:
-          - name: alertname
-            value: AlwaysFire
-        receiver: webhook
-        groupBy: ['severity']
+    receiver: webhook
+    
