@@ -3,11 +3,8 @@ kind: PrometheusRule
 metadata:
   name: backend-rules
   labels:
-
     release: prometheus
-
 spec:
-
   groups:
     - name: backend-alerts
       rules:
@@ -30,27 +27,23 @@ spec:
 
 
 
-
+---
 
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
   name: alertmanager-config
+  namespace: default
   labels:
     ressource: prometheus
 spec:
-  route:
-    group_by: ['severity']
-    group_wait: 10s
-    group_interval: 5m
-    repeat_interval: 3h
-    receiver: 'webhook'
-
   receivers:
-  - name: 'webhook'
-    webhook_configs:
-    - url: 'http://nestjs-service/alerts'  
-
-
-
-
+    - name: webhook
+      webhookConfigs:
+        - url: http://10.152.183.139/alerts
+  route:
+    groupBy: ['severity']
+    groupInterval: 1s
+    groupWait: 10s
+    receiver: webhook
+    repeatInterval: 3h
