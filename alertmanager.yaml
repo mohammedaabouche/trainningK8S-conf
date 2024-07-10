@@ -34,12 +34,14 @@ metadata:
 spec:
   alerting:
     alertmanagers:
-      - staticConfigs:
+      - static_configs:
           - targets:
               - alertmanager:9093
   serviceMonitorSelector:
     matchLabels:
       release: prometheus
+
+
 
 ---
 apiVersion: v1
@@ -59,7 +61,7 @@ kind: ConfigMap
 metadata:
   name: alertmanager-config
 data:
-  alertmanager.yml: 
+  alertmanager.yml: |
     global:
       resolve_timeout: 5m
 
@@ -74,7 +76,7 @@ data:
     receivers:
     - name: 'webhook-receiver'
       webhook_configs:
-      - url: nestjs-service/Metrics
+      - url: nestjs-service/Metrics'  # URL du service backend-nest pour recevoir les alertes
         send_resolved: true
 
     inhibit_rules:
@@ -83,6 +85,7 @@ data:
         target_match:
           severity: 'warning'
         equal: ['alertname', 'dev', 'instance']
+
 
 ---
 apiVersion: apps/v1
