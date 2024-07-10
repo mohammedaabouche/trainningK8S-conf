@@ -28,6 +28,7 @@ spec:
           expr: vector(1)  
           labels:
             severity: critical
+            name : AlwaysFiring
           annotations:
             summary: "Always firing alert"
             description: "This alert rule always triggers as its condition is constantly true."
@@ -40,7 +41,6 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
   name: alertmanager-config
-  namespace: default
   labels:
     resource: prometheus
     release: prometheus
