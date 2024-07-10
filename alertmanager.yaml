@@ -69,7 +69,7 @@ route:
 receivers:
 - name: 'nest-webhook'
   webhook_configs:
-  - url: 'http://nestjs-service:5000/alerts'  
+  - url: 'http://nestjs-service/alerts'  
 
 
 
