@@ -24,6 +24,13 @@ spec:
           annotations:
             summary: "High request latency"
             description: "Request latency is above 1 second for the backend."
+        - alert: AlwaysFiringAlert
+          expr: vector(1)  
+          labels:
+            severity: critical
+          annotations:
+            summary: "Always firing alert"
+            description: "This alert rule always triggers as its condition is constantly true."
 
 
 
