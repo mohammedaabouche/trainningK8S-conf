@@ -48,9 +48,10 @@ spec:
     - name: webhook
       webhookConfigs:
         - url: http://10.152.183.139/alerts
+
   route:
     groupBy: ['severity']
     groupInterval: 5s
     groupWait: 10s
     receiver: webhook
-    repeatInterval: 3h
+    repeatInterval: 30s
