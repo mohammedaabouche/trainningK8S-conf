@@ -57,7 +57,7 @@ metadata:
   name: backend-service-monitor
   labels:
     app: backend
-    job: backend-service-monitor
+    release: prometheus
 spec:
   selector:
     matchLabels:
