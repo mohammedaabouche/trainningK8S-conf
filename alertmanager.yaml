@@ -10,7 +10,7 @@ spec:
       rules:
         - alert: BackendDown
           expr: up{job="backend-service"} == 0
-          for: 5m
+          for: 1s
           labels:
             severity: critical
           annotations:
@@ -43,7 +43,7 @@ spec:
         - url: http://10.152.183.139/alerts
   route:
     groupBy: ['severity']
-    groupInterval: 1s
+    groupInterval: 5m
     groupWait: 10s
     receiver: webhook
     repeatInterval: 3h
