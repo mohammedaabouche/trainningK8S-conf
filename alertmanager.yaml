@@ -82,11 +82,13 @@ data:
         equal: ['alertname', 'dev', 'instance']
 
 
----
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alertmanager-deployment
+  labels:
+    app: alertmanager
 spec:
   replicas: 1
   selector:
@@ -100,8 +102,8 @@ spec:
       containers:
         - name: alertmanager
           image: prom/alertmanager
-          args:
-            - '--config.file=/etc/config/alertmanager.yml'
+         
           ports:
             - containerPort: 9093
+
          
