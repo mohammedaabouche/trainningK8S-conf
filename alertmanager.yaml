@@ -1,65 +1,22 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: backend-rules
-  labels:
-    release: prometheus
-spec:
-  groups:
-    - name: backend-alerts
-      rules:
-        - alert: BackendUP
-          expr: up{job="backend-service"} == 1
-          for: 2s
-          labels:
-            severity: critical
-          annotations:
-            summary: "backend instance down"
-            description: "The  backend instance is down for more than 5 minutes."
-        - alert: HighRequestLatency
-          expr: http_request_duration_seconds{job="backend-service", quantile="0.99"} > 1
-          for: 1s
-          labels:
-            severity: warning
-          annotations:
-            summary: "High request latency"
-            description: "Request latency is above 1 second for the backend."
-        - alert: HighErrorRate
-          expr: rate(http_request_duration_seconds_count{job="backend-service", status="500"}[5m]) / rate(http_request_duration_seconds_count{job="backend-service"}[5m]) * 100 > 1
-          for: 1s
-          labels:
-            severity: warning
-          annotations:
-            summary: "High error rate"
-            description: "The error rate is above 1% for the backend."
-        - alert : AlwaysFire
-          expr: vector(1)
-          labels:
-            severity: critical
-          annotations:
-            summary: "Always Firing Alerting"
-            description: "This alert is always firing."
-
-
-
----
-
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
   name: alertmanager-config
   labels:
+    app: alertmanager
     resource: prometheus
 spec:
-  
   route:
     groupBy: ['severity']
-    groupInterval: 5s
-    groupWait: 10s
+    groupInterval: 5m
+    groupWait: 30s
     repeatInterval: 12h
-    receiver: webhook
-    
-receivers:
+    routes:
+      - match:
+          severity: critical
+        receiver: webhook
+
+  receivers:
     - name: webhook
       webhookConfigs:
-        - url: http://10.152.183.139/alerts
+        - url: 'http://10.152.183.236/alerts'

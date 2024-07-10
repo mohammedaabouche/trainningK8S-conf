@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: backend-rules
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: backend-alerts
+      rules:
+        - alert: BackendUP
+          expr: up{job="backend-service"} == 1
+          for: 2s
+          labels:
+            severity: critical
+          annotations:
+            summary: "backend instance down"
+            description: "The  backend instance is down for more than 5 minutes."
+       
+
+
