@@ -56,29 +56,22 @@ kind: ConfigMap
 metadata:
   name: alertmanager-config
 data:
-    global:
-      resolve_timeout: 5m
+  global:
+  resolve_timeout: 5m
 
-    route:
-      group_by: ['alertname', 'severity']
-      group_wait: 10s
-      group_interval: 5m
-      repeat_interval: 12h
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: 'nest-webhook'
 
-      receiver: 'webhook-receiver'
+receivers:
+- name: 'nest-webhook'
+  webhook_configs:
+  - url: 'http://nestjs-service:5000/alerts'  # Replace with your NestJS service URL and endpoint
 
-    receivers:
-    - name: 'webhook-receiver'
-      webhook_configs:
-      - url: http/nestjs-service/Metrics'  
-        send_resolved: true
 
-    inhibit_rules:
-      - source_match:
-          severity: 'critical'
-        target_match:
-          severity: 'warning'
-        equal: ['alertname', 'dev', 'instance']
 
 
 
