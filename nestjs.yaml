@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nestjs
-          image: mohammedaabouche/nestjs:3.3
+          image: mohammedaabouche/nestjs:3.4
           ports:
             - containerPort: 3001
 ---
