@@ -50,18 +50,16 @@ metadata:
   name: alertmanager-config
   labels:
     resource: prometheus
-    release: prometheus
 spec:
-  receivers:
+  
+  route:
+    groupBy: ['severity']
+    groupInterval: 5s
+    groupWait: 10s
+    repeatInterval: 12h
+    receiver: webhook
+    
+receivers:
     - name: webhook
       webhookConfigs:
         - url: http://10.152.183.139/alerts
-
-  route:
-    groupBy: ['alertname']
-    groupInterval: 5s
-    groupWait: 10s
-    receiver: webhook
-    repeatInterval: 30s
-    receiver: webhook
-    
