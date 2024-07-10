@@ -8,8 +8,8 @@ spec:
   groups:
     - name: backend-alerts
       rules:
-        - alert: BackendDown
-          expr: up{job="backend-service"} == 0
+        - alert: BackendUP
+          expr: up{job="backend-service"} == 1
           for: 2s
           labels:
             severity: critical
@@ -58,7 +58,7 @@ spec:
         - url: http://10.152.183.139/alerts
 
   route:
-    groupBy: ['severity']
+    groupBy: ['alertname']
     groupInterval: 5s
     groupWait: 10s
     receiver: webhook
@@ -66,5 +66,6 @@ spec:
     routes:
       - matchers:
           - name: alertname
-            value: AlwaysFiringAlerting
+            value: AlwaysFire
         receiver: webhook
+        groupBy: ['severity']
