@@ -58,5 +58,6 @@ spec:
     repeatInterval: 30s
     routes:
       - matchers:
-          - alertname = "AlwaysFiring"
+          - name: severity
+            value: critical
         receiver: webhook
