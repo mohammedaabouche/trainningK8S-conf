@@ -18,7 +18,7 @@ spec:
             description: "The  backend instance is down for more than 5 minutes."
         - alert: HighRequestLatency
           expr: http_request_duration_seconds{job="backend-service", quantile="0.99"} > 1
-          for: 5m
+          for: 1s
           labels:
             severity: warning
           annotations:
@@ -43,7 +43,7 @@ spec:
         - url: http://10.152.183.139/alerts
   route:
     groupBy: ['severity']
-    groupInterval: 5m
+    groupInterval: 5s
     groupWait: 10s
     receiver: webhook
     repeatInterval: 3h
