@@ -26,3 +26,84 @@ spec:
             summary: "High request latency"
             description: "Request latency is above 1 second for the backend."
 
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  alerting:
+    alertmanagers:
+      - staticConfigs:
+          - targets:
+              - alertmanager:9093
+  serviceMonitorSelector:
+    matchLabels:
+      release: prometheus
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+spec:
+  ports:
+    - port: 9093
+      targetPort: 9093
+  selector:
+    app: alertmanager
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  alertmanager.yml: 
+    global:
+      resolve_timeout: 5m
+
+    route:
+      group_by: ['alertname', 'severity']
+      group_wait: 10s
+      group_interval: 5m
+      repeat_interval: 12h
+
+      receiver: 'webhook-receiver'
+
+    receivers:
+    - name: 'webhook-receiver'
+      webhook_configs:
+      - url: nestjs-service/Metrics
+        send_resolved: true
+
+    inhibit_rules:
+      - source_match:
+          severity: 'critical'
+        target_match:
+          severity: 'warning'
+        equal: ['alertname', 'dev', 'instance']
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+        - name: alertmanager
+          image: prom/alertmanager
+          args:
+            - '--config.file=/etc/config/alertmanager.yml'
+          ports:
+            - containerPort: 9093
+         
