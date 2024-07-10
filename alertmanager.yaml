@@ -10,7 +10,7 @@ spec:
       rules:
         - alert: BackendDown
           expr: up{job="backend-service"} == 0
-          for: 1s
+          for: 2s
           labels:
             severity: critical
           annotations:
@@ -24,7 +24,7 @@ spec:
           annotations:
             summary: "High request latency"
             description: "Request latency is above 1 second for the backend."
-        - alert: AlwaysFiringAlert
+        - alert: AlwaysFiringAlerting
           expr: vector(1)  
           labels:
             severity: critical
