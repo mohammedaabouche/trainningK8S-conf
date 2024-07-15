@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alert-config
+  labels:
+    resource: prometheus
+spec:
+  route:
+    groupBy: ['severity','cluster']
+    groupWait: 30s
+    groupInterval: 1m
+    repeatInterval: 3m
+    receiver: "webhook"
+
+  receivers:
+    - name: "webhook"
+      webhookConfigs:
+        - url: "http://nestjs-service/alerts"

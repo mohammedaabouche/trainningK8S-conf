@@ -1,21 +1,29 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: backend-rules
   labels:
     release: prometheus
+  name: backend-rules
+  
 spec:
   groups:
-    - name: backend-alerts
+    - name: backend
       rules:
-        - alert: BackendUP
-          expr: up{job="backend-service"} == 1
-          for: 2s
+        - alert: down
+          expr: up == 1
+          for: 1m
           labels:
             severity: critical
+            cluster: cluster1 
           annotations:
-            summary: "backend instance down"
-            description: "The  backend instance is down for more than 5 minutes."
-       
-
-
+            summary: "backend instance up"
+            description: "The backend instance is up for more than 1 minute."
+        - alert: up
+          expr: up == 1
+          for: 0m
+          labels:
+            severity: critical
+            cluster: cluster1
+          annotations:
+            summary: "backend test alert"
+            description: "This is a test alert."
